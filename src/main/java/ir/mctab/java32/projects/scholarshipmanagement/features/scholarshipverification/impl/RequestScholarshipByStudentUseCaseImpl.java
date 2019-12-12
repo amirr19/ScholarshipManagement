@@ -8,10 +8,7 @@ import ir.mctab.java32.projects.scholarshipmanagement.features.scholarshipverifi
 import ir.mctab.java32.projects.scholarshipmanagement.model.Scholarship;
 import ir.mctab.java32.projects.scholarshipmanagement.model.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 
 @Service
@@ -30,7 +27,7 @@ public class RequestScholarshipByStudentUseCaseImpl implements RequestScholarshi
                     connection = DatabaseConfig.getDatabaseConnection();
                     //query
                     String requestByStudent = "INSERT INTO scholarship(status,name,family,nationalCode,lastUni,lastDegree,lastField,lastScore,applyUni,applyDegree,applyField,applyDate)  VALUE (?,?,?,?,?,?,?,?,?,?,?,?)";
-                    PreparedStatement preparedStatement = connection.prepareStatement(requestByStudent);
+                    PreparedStatement preparedStatement = connection.prepareStatement(requestByStudent, Statement.RETURN_GENERATED_KEYS);
                     preparedStatement.setString(1,"RequestedByStudent");
                     preparedStatement.setString(2,name);
                     preparedStatement.setString(3,family);

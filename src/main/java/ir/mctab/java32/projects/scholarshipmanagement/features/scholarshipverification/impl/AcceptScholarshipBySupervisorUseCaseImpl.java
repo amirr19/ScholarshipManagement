@@ -10,13 +10,13 @@ import ir.mctab.java32.projects.scholarshipmanagement.model.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 @Service
 public class AcceptScholarshipBySupervisorUseCaseImpl implements AcceptScholarshipBySupervisorUseCase {
     public void accept(Long scholarshipId) {
         User user = AuthenticationService.getInstance().getLoginUser();
-
-        if (user != null && user.getRole().equals("Supervisor")) {
+        if (user != null && user.getRole().equals("supervisor")) {
 
             // connection
             try {

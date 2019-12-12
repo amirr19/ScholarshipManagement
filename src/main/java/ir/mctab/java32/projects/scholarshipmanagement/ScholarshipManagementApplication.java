@@ -1,8 +1,6 @@
 package ir.mctab.java32.projects.scholarshipmanagement;
 
-import ir.mctab.java32.projects.scholarshipmanagement.features.scholarshipverification.impl.AcceptScholarshipBySupervisorUseCaseImpl;
-import ir.mctab.java32.projects.scholarshipmanagement.features.scholarshipverification.impl.FindScholarshipBySupervisorUseCaseImpl;
-import ir.mctab.java32.projects.scholarshipmanagement.features.scholarshipverification.impl.RequestScholarshipByStudentUseCaseImpl;
+import ir.mctab.java32.projects.scholarshipmanagement.features.scholarshipverification.impl.*;
 import ir.mctab.java32.projects.scholarshipmanagement.features.scholarshipverification.usecases.*;
 import ir.mctab.java32.projects.scholarshipmanagement.features.usermanagement.impl.LoginUseCaseImpl;
 import ir.mctab.java32.projects.scholarshipmanagement.features.usermanagement.usecases.LoginUseCase;
@@ -84,6 +82,7 @@ public class ScholarshipManagementApplication {
                         goal_level,
                         applyField,
                         applyDegree);
+                System.out.println("ur request has been sent!");
             }
 
             // find scholarship by supervisor
@@ -97,7 +96,22 @@ public class ScholarshipManagementApplication {
                     System.out.println(scholarships.get(i));
                 }
             }
-
+            if (command.equals("manlist")) {
+                FindScholarshipByManagerUseCase findScholarshipByManagerUseCase = new FindScholarshipByManagerUseCaseImpl();
+                List<Scholarship> scholarships = findScholarshipByManagerUseCase
+                        .listScholarships();
+                for (int i = 0; i < scholarships.size(); i++) {
+                    System.out.println(scholarships.get(i));
+                }
+            }
+            if (command.equals("unilist")) {
+                FindScholarshipByUniversityUseCase findScholarshipByUniversityUseCase = new FindScholarshipByUniversityUseCaseImpl();
+                List<Scholarship> scholarships = findScholarshipByUniversityUseCase
+                        .listScholarships();
+                for (int i = 0; i < scholarships.size(); i++) {
+                    System.out.println(scholarships.get(i));
+                }
+            }
             // accept
             if (command.equals("svaccept")) {
                 AcceptScholarshipBySupervisorUseCase acceptScholarshipBySupervisorUseCase
@@ -106,6 +120,23 @@ public class ScholarshipManagementApplication {
                 String scholarshipId = scanner.nextLine();
                 acceptScholarshipBySupervisorUseCase.accept(Long.parseLong(scholarshipId));
                 System.out.println("Done.");
+            }
+            if (command.equals("manaccept")) {
+                AcceptScholarshipByManagerUseCase acceptScholarshipByManagerUseCase
+                        = new AcceptScholarshipByManagerUseCaseImpl();
+                System.out.println("Scholarship Id: ");
+                String scholarshipId = scanner.nextLine();
+                acceptScholarshipByManagerUseCase.accept(Long.parseLong(scholarshipId));
+                System.out.println("Done.");
+            }
+            //regected
+            if (command.equals("manreject")) {
+                RejectScholarshipByManagerUseCase rejectScholarshipByManagerUseCase
+                        = new RejectScholarshipByManagerUseCaseImpl();
+                System.out.println("Scholarship Id: ");
+                String scholarshipId = scanner.nextLine();
+                rejectScholarshipByManagerUseCase.accept(Long.parseLong(scholarshipId));
+                System.out.println("Reject Done.");
             }
         }
     }
