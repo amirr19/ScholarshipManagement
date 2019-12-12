@@ -18,7 +18,7 @@ public class FindScholarshipBySupervisorUseCaseImpl implements FindScholarshipBy
         User loginUser = AuthenticationService.getInstance().getLoginUser();
         List<Scholarship> result = new ArrayList<Scholarship>();
         if (loginUser != null) {
-            if (loginUser.getRole().equals("Supervisor")) {
+            if (loginUser.getRole().equals("supervisor")) {
                 // connection
                 Connection connection = null;
                 try {

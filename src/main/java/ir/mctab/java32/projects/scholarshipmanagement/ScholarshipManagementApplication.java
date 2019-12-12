@@ -2,8 +2,8 @@ package ir.mctab.java32.projects.scholarshipmanagement;
 
 import ir.mctab.java32.projects.scholarshipmanagement.features.scholarshipverification.impl.AcceptScholarshipBySupervisorUseCaseImpl;
 import ir.mctab.java32.projects.scholarshipmanagement.features.scholarshipverification.impl.FindScholarshipBySupervisorUseCaseImpl;
-import ir.mctab.java32.projects.scholarshipmanagement.features.scholarshipverification.usecases.AcceptScholarshipBySupervisorUseCase;
-import ir.mctab.java32.projects.scholarshipmanagement.features.scholarshipverification.usecases.FindScholarshipBySupervisorUseCase;
+import ir.mctab.java32.projects.scholarshipmanagement.features.scholarshipverification.impl.RequestScholarshipByStudentUseCaseImpl;
+import ir.mctab.java32.projects.scholarshipmanagement.features.scholarshipverification.usecases.*;
 import ir.mctab.java32.projects.scholarshipmanagement.features.usermanagement.impl.LoginUseCaseImpl;
 import ir.mctab.java32.projects.scholarshipmanagement.features.usermanagement.usecases.LoginUseCase;
 import ir.mctab.java32.projects.scholarshipmanagement.model.Scholarship;
@@ -18,7 +18,7 @@ public class ScholarshipManagementApplication {
 
         Scanner scanner = new Scanner(System.in);
         String command = "";
-        while (! command.equals("exit")) {
+        while (!command.equals("exit")) {
             System.out.println("what do you want? ");
             command = scanner.nextLine();
             // Login
@@ -33,6 +33,59 @@ public class ScholarshipManagementApplication {
                     System.out.println(" Login successful by " + user.getRole());
                 }
             }
+            //request Scholarship by student
+            if (command.equals("request")) {
+                RequestScholarshipByStudentUseCase requestScholarshipByStudentUseCase =
+                        new RequestScholarshipByStudentUseCaseImpl();
+                Scanner scanner1 = new Scanner(System.in);
+                System.out.println("pls inter ur name:");
+                String name = scanner1.nextLine();
+                System.out.println("pls inter ur family:");
+                String family = scanner1.nextLine();
+                System.out.println("pls inter ur nationalCode:");
+                String nationalCode = scanner1.nextLine();
+
+                System.out.println("pls inter ur lastUni :");
+                String lastUni = scanner1.nextLine();
+
+                System.out.println("pls inter ur lastDegree:");
+                String lastDegree = scanner1.nextLine();
+
+                System.out.println("pls inter ur lastField:");
+                String lastField = scanner1.nextLine();
+
+                System.out.println("pls inter ur lastScore:");
+                float lastScore = scanner1.nextFloat();
+                String s = scanner1.nextLine();
+                System.out.println("pls inter ur applyUni:");
+                String applyUni = scanner1.nextLine();
+
+                System.out.println("pls inter ur applyDegree:");
+                String goal_level = scanner1.nextLine();
+
+                System.out.println("pls inter ur apply major :");
+                String applyDegree = scanner1.nextLine();
+
+                System.out.println("pls inter ur applyField:");
+                String applyField = scanner1.nextLine();
+
+                System.out.println("pls inter ur applyDate:");
+                String applyDate = scanner1.nextLine();
+
+                requestScholarshipByStudentUseCase.request(
+                        name,
+                        family,
+                        nationalCode,
+                        lastUni,
+                        lastDegree,
+                        lastField,
+                        lastScore,
+                        applyUni,
+                        goal_level,
+                        applyField,
+                        applyDegree);
+            }
+
             // find scholarship by supervisor
             if (command.equals("svlist")) {
                 FindScholarshipBySupervisorUseCase findScholarshipBySupervisorUseCase
