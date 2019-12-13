@@ -26,6 +26,11 @@ public class AcceptScholarshipByManagerUseCaseImpl implements AcceptScholarshipB
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
                 preparedStatement.setLong(1, scholarshipId);
                 preparedStatement.executeUpdate();
+                String sqlLog = "INSERT INTO scholarship_log Value(null,now(),?,?,'AcceptedByManager')";
+                PreparedStatement preparedStatement1 = connection.prepareStatement(sqlLog);
+                preparedStatement1.setLong(1,user.getId());
+                preparedStatement1.setLong(2,scholarshipId);
+                preparedStatement1.executeUpdate();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             } catch (SQLException e) {

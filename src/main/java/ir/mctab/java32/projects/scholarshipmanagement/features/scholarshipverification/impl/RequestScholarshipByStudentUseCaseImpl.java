@@ -19,30 +19,44 @@ public class RequestScholarshipByStudentUseCaseImpl implements RequestScholarshi
                         Float lastScore, String applyUni, String applyDegree,
                         String applyField, String applyDate) {
         User loginUser = AuthenticationService.getInstance().getLoginUser();
-        if (loginUser!= null){
-            if(loginUser.getRole().equals("student")){
+        if (loginUser != null) {
+            if (loginUser.getRole().equals("student")) {
                 //connection
                 Connection connection = null;
                 try {
-                    connection = DatabaseConfig.getDatabaseConnection();
                     //query
-                    String requestByStudent = "INSERT INTO scholarship(status,name,family,nationalCode,lastUni,lastDegree,lastField,lastScore,applyUni,applyDegree,applyField,applyDate)  VALUE (?,?,?,?,?,?,?,?,?,?,?,?)";
-                    PreparedStatement preparedStatement = connection.prepareStatement(requestByStudent, Statement.RETURN_GENERATED_KEYS);
-                    preparedStatement.setString(1,"RequestedByStudent");
-                    preparedStatement.setString(2,name);
-                    preparedStatement.setString(3,family);
-                    preparedStatement.setString(4,nationalCode);
-                    preparedStatement.setString(5,lastUni);
-                    preparedStatement.setString(6,lastDegree);
-                    preparedStatement.setString(7,lastField);
-                    preparedStatement.setFloat(8,lastScore);
-                    preparedStatement.setString(9,applyUni);
-                    preparedStatement.setString(10,applyDegree);
-                    preparedStatement.setString(11,applyField);
-                    preparedStatement.setString(12,applyDate);
-                    preparedStatement.executeUpdate();
-                    preparedStatement.close();
+                    String sql = "INSERT INTO scholarship(status,name,family,nationalCode,lastUni,lastDegree,lastField,lastScore,applyUni,applyDegree,applyField,applyDate)  VALUE (?,?,?,?,?,?,?,?,?,?,?,?)";
+                    String sqlLog = "insert into scholarship_log (date,userID,fkscholarshipID,action)values" +
+                            " (now(),?,?,'RequestByStudent')";
+                    connection = DatabaseConfig.getDatabaseConnection();
 
+                    PreparedStatement psLog = connection.prepareStatement(sqlLog);
+                    PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+                    ps.setString(1, "RequestedByStudent");
+                    ps.setString(2, name);
+                    ps.setString(3, family);
+                    ps.setString(4, nationalCode);
+                    ps.setString(5, lastUni);
+                    ps.setString(6, lastDegree);
+                    ps.setString(7, lastField);
+                    ps.setFloat(8, lastScore);
+                    ps.setString(9, applyUni);
+                    ps.setString(10, applyDegree);
+                    ps.setString(11, applyField);
+                    ps.setString(12, applyDate);
+                    if (ps.executeUpdate() != 0) {
+                        System.out.println("ur request has been sent!");
+                        ResultSet rs = ps.getGeneratedKeys();
+                        if (rs.next()){
+                            psLog.setLong(1,loginUser.getId());
+                            psLog.setLong(2,rs.getInt(1));
+                        }
+                        if(psLog.executeUpdate()!=0){
+                            System.out.println("Request Scholarship insert into log.");
+                        }
+                    }
+                    ps.close();
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 } catch (SQLException e) {

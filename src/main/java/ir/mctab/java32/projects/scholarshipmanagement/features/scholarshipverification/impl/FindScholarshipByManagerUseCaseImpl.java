@@ -51,6 +51,7 @@ public class FindScholarshipByManagerUseCaseImpl implements FindScholarshipByMan
                         );
                         result.add(scholarship);
                     }
+
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 } catch (SQLException e) {

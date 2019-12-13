@@ -13,7 +13,7 @@ import java.sql.SQLException;
 
 @Service
 public class RejectScholarshipByManagerUseCaseImpl implements RejectScholarshipByManagerUseCase {
-    public void accept(Long scholarshipId) {
+    public void reject(Long scholarshipId) {
         User user = AuthenticationService.getInstance().getLoginUser();
         if (user != null && user.getRole().equals("manager")) {
             // connection
@@ -26,6 +26,11 @@ public class RejectScholarshipByManagerUseCaseImpl implements RejectScholarshipB
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
                 preparedStatement.setLong(1, scholarshipId);
                 preparedStatement.executeUpdate();
+                String sqlLog = "INSERT INTO scholarship_log Value(null,now(),?,?,'RejectedByManager')";
+                PreparedStatement preparedStatement1 = connection.prepareStatement(sqlLog);
+                preparedStatement1.setLong(1,user.getId());
+                preparedStatement1.setLong(2,scholarshipId);
+                preparedStatement1.executeUpdate();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             } catch (SQLException e) {
